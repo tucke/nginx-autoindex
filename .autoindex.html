@@ -57,111 +57,77 @@
 <script>
   function getClassName(filename) {
     if (!filename) {
-      return "file";
+      return 'file';
     }
-    if (filename.endsWith("/")) {
-      return "folder";
+    if (filename.endsWith('/')) {
+      return 'folder';
     }
-    const array = filename.split(".");
+    const array = filename.split('.');
     let suffix = array[array.length - 1];
     if (!suffix) {
-      return "file";
+      return 'file';
     }
     suffix = suffix.toLowerCase();
-    const img = ["gif", "jpg", "png", "svg", "jpeg", "bmp"];
+    const img = ['gif', 'jpg', 'png', 'svg', 'jpeg', 'bmp'];
     if (img.includes(suffix)) {
-      return "img";
+      return 'img';
     }
-    const lambda = [
-      "java",
-      "js",
-      "ts",
-      "go",
-      "c",
-      "cpp",
-      "cs",
-      "py",
-      "sh",
-      "swift",
-      "php",
-      "html",
-      "css",
-      "xml",
-      "json",
-      "yml",
-      "yaml",
-      "md",
-      "log",
-      "ini",
-      "conf",
-      "properties",
-      "cmd",
-      "bat",
-    ];
+    const lambda = ['java', 'js', 'ts', 'go', 'c', 'cpp', 'cs', 'py', 'sh', 'swift', 'php', 'html', 'css', 'xml', 'json', 'yml', 'yaml', 'md', 'log', 'ini', 'conf', 'properties', 'cmd', 'bat'];
     if (lambda.includes(suffix)) {
-      return "lambda";
+      return 'lambda';
     }
-    return "file";
+    return 'file';
   }
 
   function formatDate(date, time) {
     const mon = {
-      Jan: "01",
-      Feb: "02",
-      Mar: "03",
-      Apr: "04",
-      May: "05",
-      Jun: "06",
-      Jul: "07",
-      Aug: "08",
-      Sep: "09",
-      Oct: "10",
-      Nov: "11",
-      Dec: "12",
+      Jan: '01',
+      Feb: '02',
+      Mar: '03',
+      Apr: '04',
+      May: '05',
+      Jun: '06',
+      Jul: '07',
+      Aug: '08',
+      Sep: '09',
+      Oct: '10',
+      Nov: '11',
+      Dec: '12',
     };
-    const [day, month, year] = date.split("-");
+    const [day, month, year] = date.split('-');
     return `${year}-${mon[month]}-${day} ${time}`;
   }
 
   function formatSize(size) {
-    if (size === "-") {
-      return "";
+    if (size === '-') {
+      return '';
     }
+    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
     let s = Number(size);
-    if (s < 1024) {
-      return size + "B";
+    for (const u of units) {
+      if (s < 1024) {
+        return s.toFixed(2) + ' ' + u;
+      }
+      s = s / 1024;
     }
-    s = s / 1024;
-    if (s < 1024) {
-      return s.toFixed(2) + "KB";
-    }
-    s = s / 1024;
-    if (s < 1024) {
-      return s.toFixed(2) + "MB";
-    }
-    s = s / 1024;
-    if (s < 1024) {
-      return s.toFixed(2) + "GB";
-    }
-    s = s / 1024;
-    return s.toFixed(2) + "TB";
+    return s.toFixed(2) + ' ' + units[units.length - 1];
   }
 
   function change() {
-    const preElement = document.getElementsByTagName("pre")[0];
+    const preElement = document.getElementsByTagName('pre')[0];
     const preClassName = preElement.className;
     if (preClassName) {
       return;
     }
-    const outerBox = document.createElement("div");
-    outerBox.classList.add("yq-outer-box");
+    const outerBox = document.createElement('div');
+    outerBox.classList.add('yq-outer-box');
 
     let row;
     preElement.childNodes.forEach((child) => {
       if (child.nodeType === Node.ELEMENT_NODE) {
-        row = document.createElement("div");
-        row.classList.add("yq-row");
-        const name = document.createElement("a");
+        row = document.createElement('div');
+        row.classList.add('yq-row');
+        const name = document.createElement('a');
         name.href = child.href;
         name.innerText = child.text;
         name.classList.add(getClassName(child.text));
@@ -172,14 +138,14 @@
         if (!text) {
           return;
         }
-        const textArray = text.split(" ").filter((item) => item.trim());
-        const lastModified = document.createElement("div");
+        const textArray = text.split(' ').filter((item) => item.trim());
+        const lastModified = document.createElement('div');
         lastModified.innerText = formatDate(textArray[0], textArray[1]);
-        lastModified.classList.add("last-modified");
+        lastModified.classList.add('last-modified');
         row.appendChild(lastModified);
-        const size = document.createElement("div");
+        const size = document.createElement('div');
         size.innerText = formatSize(textArray[2]);
-        size.classList.add("size");
+        size.classList.add('size');
         row.appendChild(size);
       }
     });
